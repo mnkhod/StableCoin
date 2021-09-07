@@ -78,6 +78,9 @@ contract MnkCoin is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, P
     }
 
 
+    function getCirculatingSupply() public view returns(uint) {
+        return _circulatingSupply;
+    }
 
     function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
