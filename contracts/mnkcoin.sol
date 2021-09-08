@@ -18,6 +18,7 @@ contract MnkCoin is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, P
     address private _transaction_address;
     uint256 private _circulatingSupply;
     mapping(address => bool) private _blacklist;
+    mapping(address => bool) private _whitelist;
 
     function initialize() initializer public {
         __ERC20_init("MnkCoin", "MNK");
@@ -28,6 +29,7 @@ contract MnkCoin is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, P
         _transaction_fee=0;
         _circulatingSupply=0;
         _transaction_address = msg.sender;
+        whiteListUpdate(msg.sender,true);
     }
 
     function transfer(address recipient, uint256 amount) public override returns(bool){
@@ -63,8 +65,16 @@ contract MnkCoin is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, P
         return _blacklist[user];
     }
 
-    function blacklistUpdate(address user, bool value) public virtual onlyOwner {
+    function blackListUpdate(address user, bool value) public virtual onlyOwner {
         _blacklist[user] = value;
+    }
+
+    function isWhiteList(address user) public view returns (bool) {
+        return _whitelist[user];
+    }
+
+    function whiteListUpdate(address user, bool value) public virtual onlyOwner {
+        _whitelist[user] = value;
     }
 
 
@@ -83,6 +93,7 @@ contract MnkCoin is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, P
     }
 
     function mint(address to, uint256 amount) public onlyOwner {
+        require (isWhiteList(to), "Token mint refused. Address is not on whitelist");
         _mint(to, amount);
         _circulatingSupply = _circulatingSupply.add(amount);
     }

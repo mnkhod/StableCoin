@@ -60,31 +60,32 @@ contract("MnkCoin", function ([owner, other]) {
 
   it("testing blacklistUpdate() - blacklisting a person", async function () {
       const blackListUserAddress = '0x2546bcd3c84621e976d8185a91a922ae77ecec30';
-      await this.coin.blacklistUpdate(blackListUserAddress,true);
+      await this.coin.blackListUpdate(blackListUserAddress,true);
 
       expect((await this.coin.isBlackListed(blackListUserAddress))).to.equal(true);
   });
 
   it("testing blacklistUpdate() - unblacklisting a person", async function () {
       const blackListUserAddress = '0x2546bcd3c84621e976d8185a91a922ae77ecec30';
-      await this.coin.blacklistUpdate(blackListUserAddress,true);
+      await this.coin.blackListUpdate(blackListUserAddress,true);
 
-      await this.coin.blacklistUpdate(blackListUserAddress,false);
+      await this.coin.blackListUpdate(blackListUserAddress,false);
 
       expect((await this.coin.isBlackListed(blackListUserAddress))).to.equal(false);
   });
 
   it("testing isBlackListed()", async function () {
       const blackListUserAddress = '0x2546bcd3c84621e976d8185a91a922ae77ecec30';
-      await this.coin.blacklistUpdate(blackListUserAddress,true);
+      await this.coin.blackListUpdate(blackListUserAddress,true);
       expect((await this.coin.isBlackListed(blackListUserAddress))).to.equal(true);
 
-      await this.coin.blacklistUpdate(blackListUserAddress,false);
+      await this.coin.blackListUpdate(blackListUserAddress,false);
       expect((await this.coin.isBlackListed(blackListUserAddress))).to.equal(false);
   });
 
   it("testing mint - getCirculatingSupply() - should increase", async function () {
       const mintAddress = '0x2546bcd3c84621e976d8185a91a922ae77ecec30';
+      await this.coin.whiteListUpdate(mintAddress,true);
 
       await this.coin.mint(mintAddress,200);
       expect((await this.coin.getCirculatingSupply()).toString()).to.equal('200');
