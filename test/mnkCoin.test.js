@@ -3,9 +3,7 @@ const { BN, expectEvent, expectRevert } = require("@openzeppelin/test-helpers");
 
 const MnkCoinContract = artifacts.require("MnkCoin");
 
-// Start test block
-contract("MnkCoin", function ([owner, other]) {
-  const value = new BN("42");
+contract("Testing Transaction Fee Functionality", function ([owner, other]) {
 
   beforeEach(async function () {
     this.coin = await MnkCoinContract.new({ from: owner });
@@ -54,9 +52,14 @@ contract("MnkCoin", function ([owner, other]) {
       expect((await this.coin.balanceOf(owner)).toString()).to.equal('30');
   });
 
+})
 
+contract("Testing BlackList Functionality", function ([owner, other]) {
 
-
+  beforeEach(async function () {
+    this.coin = await MnkCoinContract.new({ from: owner });
+    this.coin.initialize();
+  });
 
   it("testing blacklistUpdate() - blacklisting a person", async function () {
       const blackListUserAddress = '0x2546bcd3c84621e976d8185a91a922ae77ecec30';
@@ -83,6 +86,15 @@ contract("MnkCoin", function ([owner, other]) {
       expect((await this.coin.isBlackListed(blackListUserAddress))).to.equal(false);
   });
 
+})
+
+contract("Testing getCirculatingSupply() ", function ([owner, other]) {
+
+  beforeEach(async function () {
+    this.coin = await MnkCoinContract.new({ from: owner });
+    this.coin.initialize();
+  });
+
   it("testing mint - getCirculatingSupply() - should increase", async function () {
       const mintAddress = '0x2546bcd3c84621e976d8185a91a922ae77ecec30';
       await this.coin.whiteListUpdate(mintAddress,true);
@@ -97,6 +109,15 @@ contract("MnkCoin", function ([owner, other]) {
 
       await this.coin.burn(200);
       expect((await this.coin.getCirculatingSupply()).toString()).to.equal('0');
+  });
+
+})
+
+contract("Testing Pause Functionality", function ([owner, other]) {
+
+  beforeEach(async function () {
+    this.coin = await MnkCoinContract.new({ from: owner });
+    this.coin.initialize();
   });
 
   it("testing pause()", async function () {
@@ -121,4 +142,40 @@ contract("MnkCoin", function ([owner, other]) {
       expect((await this.coin.getCirculatingSupply()).toString()).to.equal('0');
   });
 
-});
+})
+
+
+contract("Testing WhiteList", function ([owner, other]) {
+
+  beforeEach(async function () {
+    this.coin = await MnkCoinContract.new({ from: owner });
+    this.coin.initialize();
+  });
+
+  it("owner must be in whitelist at initialize", async function () {
+      expect((await this.coin.isWhiteList(owner))).to.equal(true);
+
+      await this.coin.mint(owner,200);
+      expect((await this.coin.balanceOf(owner)).toString()).to.equal('200');
+  });
+
+  it("testing isWhiteList()", async function () {
+      const mintAddress = '0x2546bcd3c84621e976d8185a91a922ae77ecec30';
+      await expectRevert( this.coin.mint(mintAddress,200), 'Token mint refused. Address is not on whitelist',);
+
+      expect((await this.coin.isWhiteList(mintAddress))).to.equal(false);
+      await this.coin.whiteListUpdate(mintAddress,true);
+      expect((await this.coin.isWhiteList(mintAddress))).to.equal(true);
+  });
+
+  it("testing whiteListUpdate()", async function () {
+      const mintAddress = '0x2546bcd3c84621e976d8185a91a922ae77ecec30';
+
+      await this.coin.whiteListUpdate(mintAddress,true);
+      expect((await this.coin.isWhiteList(mintAddress))).to.equal(true);
+      await this.coin.whiteListUpdate(mintAddress,false);
+      expect((await this.coin.isWhiteList(mintAddress))).to.equal(false);
+  });
+
+
+})
