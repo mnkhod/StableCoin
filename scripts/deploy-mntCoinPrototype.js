@@ -1,11 +1,11 @@
 const { ethers, upgrades } = require('hardhat');
 
 async function main () {
-    const mnkCoinContract = await ethers.getContractFactory('MnkCoin');
-    console.log('Deploying mnkCoin...');
+    const mnkCoinContract = await ethers.getContractFactory('MntCoinPrototype');
+    console.log('Deploying MntCoinPrototype...');
     const mnkCoin = await upgrades.deployProxy(mnkCoinContract, [] , { initializer: 'initialize'})
     await mnkCoin.deployed();
-    console.log('MnkCoin deployed to:', mnkCoin.address);
+    console.log('MntCoinPrototype deployed to:', mnkCoin.address);
   }
   
   main()

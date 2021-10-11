@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 
 
-contract MnkCoin is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, PausableUpgradeable, ERC20SnapshotUpgradeable , OwnableUpgradeable, UUPSUpgradeable {
+contract MntCoinPrototype is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, PausableUpgradeable, ERC20SnapshotUpgradeable , OwnableUpgradeable, UUPSUpgradeable {
     using SafeMath for uint256;
     uint256 private _transaction_fee;
     address private _transaction_address;
@@ -21,7 +21,7 @@ contract MnkCoin is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, P
     mapping(address => bool) private _whitelist;
 
     function initialize() initializer public {
-        __ERC20_init("MnkCoin", "MNK");
+        __ERC20_init("MntCoinPrototype", "MNTC-PROTOTYPE");
         __ERC20Burnable_init();
         __Pausable_init();
         __Ownable_init();
@@ -47,7 +47,9 @@ contract MnkCoin is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, P
         return _transaction_fee;
     }
 
+    event TransactionFeeUpdate(uint oldFee, uint newFee);
     function setTransactionFee(uint fee) public onlyOwner returns(uint){
+        emit TransactionFeeUpdate(_transaction_fee, fee);
         _transaction_fee = fee;
         return _transaction_fee;
     }
