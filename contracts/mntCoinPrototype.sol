@@ -59,6 +59,7 @@ contract MntCoinPrototype is Initializable, ERC20Upgradeable, ERC20BurnableUpgra
     }
 
     function setTransactionAddress(address newTransactionAddress) public onlyOwner returns(address) {
+        require(newTransactionAddress != address(0), "new transaction address is 0");
         _transaction_address = newTransactionAddress;
         return _transaction_address;
     }
