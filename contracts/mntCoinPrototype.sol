@@ -20,7 +20,7 @@ contract MntCoinPrototype is Initializable, ERC20Upgradeable, ERC20BurnableUpgra
     mapping(address => bool) private _blacklist;
     mapping(address => bool) private _whitelist;
 
-    function initialize() initializer public onlyOwner initializer {
+    function initialize() public initializer {
         __ERC20_init("MntCoinPrototype", "MNTC-PROTOTYPE");
         __ERC20Burnable_init();
         __Pausable_init();

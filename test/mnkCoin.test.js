@@ -1,13 +1,13 @@
 const { expect } = require("chai");
 const { BN, expectEvent, expectRevert } = require("@openzeppelin/test-helpers");
 
-const MnkCoinContract = artifacts.require("MnkCoin");
+const MnkCoinContract = artifacts.require("MntCoinPrototype");
 
 contract("Testing Transaction Fee Functionality", function ([owner, other]) {
 
   beforeEach(async function () {
     this.coin = await MnkCoinContract.new({ from: owner });
-    this.coin.initialize();
+    this.coin.initialize({ from: owner });
   });
 
   it("initial getTransactionFee() should return 0", async function () {

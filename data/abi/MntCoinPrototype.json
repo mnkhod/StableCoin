@@ -5,6 +5,7 @@
   "event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
   "event Paused(address account)",
   "event Snapshot(uint256 id)",
+  "event TransactionFeeUpdate(uint256 oldFee, uint256 newFee)",
   "event Transfer(address indexed from, address indexed to, uint256 value)",
   "event Unpaused(address account)",
   "event Upgraded(address indexed implementation)",
