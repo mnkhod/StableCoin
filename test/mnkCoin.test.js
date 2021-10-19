@@ -14,10 +14,10 @@ contract("Testing Transaction Fee Functionality", function ([owner, other]) {
     expect((await this.coin.getTransactionFee()).toString()).to.equal('0');
   });
 
-  it("testing setTransactionFee()", async function () {
-      await this.coin.setTransactionFee(20);
+  it("testing setTransactionFee() by setting 1%", async function () {
+      await this.coin.setTransactionFee(1000000000000000000);
 
-      expect((await this.coin.getTransactionFee()).toString()).to.equal('20');
+      expect((await this.coin.getTransactionFee()).toString()).to.equal('1000000000000000000');
   });
 
 
@@ -38,18 +38,46 @@ contract("Testing Transaction Fee Functionality", function ([owner, other]) {
 
 
 
-  it("testing transactionFeeAddress when transfer works", async function () {
+  it("testing transactionFeeAddress when transfer works : 50 owner , sending 20 => transaction_fee 1% so sending 0.2 to transaction_address , sending 19.8 to sender", async function () {
       let transactionFeeOwnerAddress = '0xcd3b766ccdd6ae721141f452c550ca635964ce71'
       let sendPersonAddress = '0xdd2fd4581271e230360230f9337d5c0430bf44c0'
       await this.coin.setTransactionAddress(transactionFeeOwnerAddress);
-      await this.coin.setTransactionFee(10);
+      await this.coin.setTransactionFee(1000000000000000000);
 
-      await this.coin.mint(owner,50);
-      await this.coin.transfer(sendPersonAddress,20)
+      await this.coin.mint(owner,50000000000000000000);
+      await this.coin.transfer(sendPersonAddress,20000000000000000000)
 
-      expect((await this.coin.balanceOf(transactionFeeOwnerAddress)).toString()).to.equal('10');
-      expect((await this.coin.balanceOf(sendPersonAddress)).toString()).to.equal('10');
-      expect((await this.coin.balanceOf(owner)).toString()).to.equal('30');
+      expect((await this.coin.balanceOf(transactionFeeOwnerAddress)).toString()).to.equal('200000000000000000');
+      expect((await this.coin.balanceOf(sendPersonAddress)).toString()).to.equal('19800000000000000000');
+      expect((await this.coin.balanceOf(owner)).toString()).to.equal('30000000000000000000');
+  });
+
+  it("testing transactionFeeAddress when transfer works : 100 owner , sending 75 => transaction_fee 15% so sending 11.25 to transaction_address , sending 63.75 to sender", async function () {
+      let transactionFeeOwnerAddress = '0xcd3b766ccdd6ae721141f452c550ca635964ce71'
+      let sendPersonAddress = '0xdd2fd4581271e230360230f9337d5c0430bf44c0'
+      await this.coin.setTransactionAddress(transactionFeeOwnerAddress);
+      await this.coin.setTransactionFee(15000000000000000000);
+
+      await this.coin.mint(owner,100000000000000000000);
+      await this.coin.transfer(sendPersonAddress,75000000000000000000)
+
+      expect((await this.coin.balanceOf(transactionFeeOwnerAddress)).toString()).to.equal('11250000000000000000');
+      expect((await this.coin.balanceOf(sendPersonAddress)).toString()).to.equal('63750000000000000000');
+      expect((await this.coin.balanceOf(owner)).toString()).to.equal('25000000000000000000');
+  });
+
+  it("testing transactionFeeAddress when transfer works : 5000 owner , sending 1234 => transaction_fee 0.45% so sending 5.553 to transaction_address , sending 1228.447 to sender", async function () {
+      let transactionFeeOwnerAddress = '0xcd3b766ccdd6ae721141f452c550ca635964ce71'
+      let sendPersonAddress = '0xdd2fd4581271e230360230f9337d5c0430bf44c0'
+      await this.coin.setTransactionAddress(transactionFeeOwnerAddress);
+      await this.coin.setTransactionFee(450000000000000000);
+
+      await this.coin.mint(owner,5000000000000000000000);
+      await this.coin.transfer(sendPersonAddress,1234000000000000000000)
+
+      expect(Number(await this.coin.balanceOf(transactionFeeOwnerAddress))).to.equal(Number(5553000000000000000));
+      expect(Number(await this.coin.balanceOf(sendPersonAddress))).to.equal(Number(1228447000000000000000));
+      expect(Number(await this.coin.balanceOf(owner))).to.equal(Number(3766000000000000000000));
   });
 
 })

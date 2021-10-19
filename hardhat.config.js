@@ -36,6 +36,11 @@ module.exports = {
       url: `https://ropsten.infura.io/v3/${infura_key}`,
       accounts: { mnemonic: our_mnemonic },
     },
+    bscMainNet: {
+      url: "https://bsc-dataseed.binance.org/",
+      chainId: 56,
+      accounts: { mnemonic: our_mnemonic },
+    },
     bscTestNet: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
       chainId: 97,

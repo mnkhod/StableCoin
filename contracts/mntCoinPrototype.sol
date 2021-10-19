@@ -33,12 +33,12 @@ contract MntCoinPrototype is Initializable, ERC20Upgradeable, ERC20BurnableUpgra
     }
 
     function transfer(address recipient, uint256 amount) public override returns(bool){
-        require(amount.sub(_transaction_fee) > 0, "Not Enough Fee");
+        require(amount.mul(_transaction_fee).div(100000000000000000000) > 0, "Not Enough Fee");
         require (!isBlackListed(recipient), "Token transfer refused. Receiver is on blacklist");
 
-        uint256 realAmount = amount.sub(_transaction_fee);
-        _transfer(msg.sender,_transaction_address,_transaction_fee);
-        _transfer(msg.sender,recipient,realAmount);
+        uint256 realAmount = amount.mul(_transaction_fee).div(100000000000000000000);
+        _transfer(msg.sender,_transaction_address,realAmount);
+        _transfer(msg.sender,recipient,amount.sub(realAmount));
         return true;
     }
 
@@ -48,6 +48,7 @@ contract MntCoinPrototype is Initializable, ERC20Upgradeable, ERC20BurnableUpgra
     }
 
     event TransactionFeeUpdate(uint oldFee, uint newFee);
+
     function setTransactionFee(uint fee) public onlyOwner returns(uint){
         emit TransactionFeeUpdate(_transaction_fee, fee);
         _transaction_fee = fee;
