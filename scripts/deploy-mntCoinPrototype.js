@@ -6,6 +6,11 @@ async function main () {
     const mnkCoin = await upgrades.deployProxy(mnkCoinContract, [] , { initializer: 'initialize'})
     await mnkCoin.deployed();
     console.log('MntCoinPrototype deployed to:', mnkCoin.address);
+
+    // Upgrading
+    const mnkCoinContractV2 = await ethers.getContractFactory('MntCoinPrototype');
+    const upgraded = await upgrades.upgradeProxy(mnkCoin.address,mnkCoinContractV2)
+    
   }
   
   main()
