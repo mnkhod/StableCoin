@@ -14,8 +14,6 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract MntCoinPrototype is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, PausableUpgradeable, ERC20SnapshotUpgradeable , OwnableUpgradeable, UUPSUpgradeable {
     using SafeMath for uint256;
-    uint256 private _transaction_fee;
-    address private _transaction_address;
     uint256 private _circulatingSupply;
     mapping(address => bool) private _blacklist;
     mapping(address => bool) private _whitelist;
@@ -26,44 +24,17 @@ contract MntCoinPrototype is Initializable, ERC20Upgradeable, ERC20BurnableUpgra
         __Pausable_init();
         __Ownable_init();
         __UUPSUpgradeable_init();
-        _transaction_fee=0;
         _circulatingSupply=0;
-        _transaction_address = msg.sender;
         whiteListUpdate(msg.sender,true);
     }
 
     function transfer(address recipient, uint256 amount) public override returns(bool){
-        require(amount.mul(_transaction_fee).div(100000000000000000000) > 0, "Not Enough Fee");
         require (!isBlackListed(recipient), "Token transfer refused. Receiver is on blacklist");
 
-        uint256 realAmount = amount.mul(_transaction_fee).div(100000000000000000000);
-        _transfer(msg.sender,_transaction_address,realAmount);
-        _transfer(msg.sender,recipient,amount.sub(realAmount));
+        _transfer(msg.sender,recipient,amount);
         return true;
     }
 
-
-    function getTransactionFee() public view returns(uint) {
-        return _transaction_fee;
-    }
-
-    event TransactionFeeUpdate(uint oldFee, uint newFee);
-
-    function setTransactionFee(uint fee) public onlyOwner returns(uint){
-        emit TransactionFeeUpdate(_transaction_fee, fee);
-        _transaction_fee = fee;
-        return _transaction_fee;
-    }
-
-    function getTransactionAddress() public view returns(address) {
-        return _transaction_address;
-    }
-
-    function setTransactionAddress(address newTransactionAddress) public onlyOwner returns(address) {
-        require(newTransactionAddress != address(0), "new transaction address is 0");
-        _transaction_address = newTransactionAddress;
-        return _transaction_address;
-    }
 
     function isBlackListed(address user) public view returns (bool) {
         return _blacklist[user];
@@ -81,8 +52,6 @@ contract MntCoinPrototype is Initializable, ERC20Upgradeable, ERC20BurnableUpgra
         _whitelist[user] = value;
     }
 
-
-
     function pause() public onlyOwner {
         _pause();
     }
@@ -90,7 +59,6 @@ contract MntCoinPrototype is Initializable, ERC20Upgradeable, ERC20BurnableUpgra
     function unpause() public onlyOwner {
         _unpause();
     }
-
 
     function getCirculatingSupply() public view returns(uint) {
         return _circulatingSupply;
