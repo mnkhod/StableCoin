@@ -55,12 +55,12 @@
     },
     {
       "address": "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90",
-      "txHash": "0x9060aba29e8eb20c766a1a8a3a351d79ceda260334966be06e2cf5bb530e2451",
+      "txHash": "0x799a32c68a0354492eeeb68bff2ecbd5163336e3772026274b95465855732355",
       "kind": "uups"
     },
     {
       "address": "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1",
-      "txHash": "0xad3c4c56a303df5eb37ea353cad6f81bf3d0abad3b8267e0e56ade46920224ed",
+      "txHash": "0x4805ee6e075659ee775c008e6df42328ac9b223bf019e0746f1074d4e70c9575",
       "kind": "uups"
     }
   ],
@@ -210,9 +210,9 @@
         }
       }
     },
-    "56a3ecfea502e9adc5f716694678594202c4ca0ce8547be6c9d5dd37935ba656": {
-      "address": "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575",
-      "txHash": "0xe945b653a50f34d0730cafc190d56a2223211669c8072e9f3e6db7f3388a4183",
+    "79bc46969e5bc58a8c68666d10adefcb375815c76b5ca7665b1eb46843d9dde9": {
+      "address": "0x2bdCC0de6bE1f7D2ee689a0342D76F52E8EFABa3",
+      "txHash": "0x59b367ba9546d637b4169e7fb0031123361516b5eb0a16f2a56b7a3b4503f975",
       "layout": {
         "storage": [
           {
@@ -419,9 +419,9 @@
         }
       }
     },
-    "79bc46969e5bc58a8c68666d10adefcb375815c76b5ca7665b1eb46843d9dde9": {
-      "address": "0x2bdCC0de6bE1f7D2ee689a0342D76F52E8EFABa3",
-      "txHash": "0x459187bdf9d6b05cafabbd90d3914d9c001767fb4301597e0886504629b8608b",
+    "76fb58530b435e930420d2d60a3c10c6361a462342883a7374a4de1f1edc57b0": {
+      "address": "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575",
+      "txHash": "0xb2fabafda849fbc1e253bb338b1c2db8790edda8cd96efdcfe9b24ec183e7a9e",
       "layout": {
         "storage": [
           {
@@ -545,22 +545,22 @@
             "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:64"
           },
           {
-            "contract": "MontCoinPrototype",
+            "contract": "MontCoin",
             "label": "_circulatingSupply",
             "type": "t_uint256",
-            "src": "contracts/montCoinPrototype.sol:17"
+            "src": "contracts/montCoin.sol:17"
           },
           {
-            "contract": "MontCoinPrototype",
+            "contract": "MontCoin",
             "label": "_blacklist",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts/montCoinPrototype.sol:18"
+            "src": "contracts/montCoin.sol:18"
           },
           {
-            "contract": "MontCoinPrototype",
+            "contract": "MontCoin",
             "label": "_whitelist",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts/montCoinPrototype.sol:19"
+            "src": "contracts/montCoin.sol:19"
           }
         ],
         "types": {

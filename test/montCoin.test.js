@@ -1,12 +1,12 @@
 const { expect } = require("chai");
 const { BN, expectEvent, expectRevert } = require("@openzeppelin/test-helpers");
 
-const MnkCoinContract = artifacts.require("MontCoinPrototype");
+const MontCoin = artifacts.require("MontCoin");
 
 contract("Testing BlackList Functionality", function ([owner, other]) {
 
   beforeEach(async function () {
-    this.coin = await MnkCoinContract.new({ from: owner });
+    this.coin = await MontCoin.new({ from: owner });
     this.coin.initialize();
   });
 
@@ -55,7 +55,7 @@ contract("Testing BlackList Functionality", function ([owner, other]) {
 contract("Testing getCirculatingSupply() ", function ([owner, other]) {
 
   beforeEach(async function () {
-    this.coin = await MnkCoinContract.new({ from: owner });
+    this.coin = await MontCoin.new({ from: owner });
     this.coin.initialize();
   });
 
@@ -80,7 +80,7 @@ contract("Testing getCirculatingSupply() ", function ([owner, other]) {
 contract("Testing Pause Functionality", function ([owner, other]) {
 
   beforeEach(async function () {
-    this.coin = await MnkCoinContract.new({ from: owner });
+    this.coin = await MontCoin.new({ from: owner });
     this.coin.initialize();
   });
 
@@ -112,7 +112,7 @@ contract("Testing Pause Functionality", function ([owner, other]) {
 contract("Testing WhiteList", function ([owner, other]) {
 
   beforeEach(async function () {
-    this.coin = await MnkCoinContract.new({ from: owner });
+    this.coin = await MontCoin.new({ from: owner });
     this.coin.initialize();
   });
 
