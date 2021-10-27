@@ -1,7 +1,7 @@
 const { expect } = require("chai");
 const { BN, expectEvent, expectRevert } = require("@openzeppelin/test-helpers");
 
-const MnkCoinContract = artifacts.require("MntCoinPrototype");
+const MnkCoinContract = artifacts.require("MontCoinPrototype");
 
 contract("Testing BlackList Functionality", function ([owner, other]) {
 
@@ -10,11 +10,26 @@ contract("Testing BlackList Functionality", function ([owner, other]) {
     this.coin.initialize();
   });
 
-  it("testing blacklistUpdate() - blacklisting a person", async function () {
-      const blackListUserAddress = '0x2546bcd3c84621e976d8185a91a922ae77ecec30';
-      await this.coin.blackListUpdate(blackListUserAddress,true);
+  it("testing blacklistUpdate() - blacklisting a person - reciever", async function () {
+      const recieverAddress = '0x2546bcd3c84621e976d8185a91a922ae77ecec30';
 
-      expect((await this.coin.isBlackListed(blackListUserAddress))).to.equal(true);
+      await this.coin.whiteListUpdate(owner,true);
+      await this.coin.mint(owner,200);
+
+      await this.coin.blackListUpdate(recieverAddress,true);
+      expect((await this.coin.isBlackListed(recieverAddress))).to.equal(true);
+      await expectRevert(this.coin.transfer(recieverAddress,200), 'Token transfer refused. Receiver is on blacklist',);
+  });
+
+  it("testing blacklistUpdate() - blacklisting a person - sender", async function () {
+      const recieverAddress = '0x2546bcd3c84621e976d8185a91a922ae77ecec30';
+
+      await this.coin.whiteListUpdate(owner,true);
+      await this.coin.mint(owner,200);
+
+      await this.coin.blackListUpdate(owner,true);
+      expect((await this.coin.isBlackListed(owner))).to.equal(true);
+      await expectRevert(this.coin.transfer(recieverAddress,200), 'Token transfer refused. Sender is on blacklist',);
   });
 
   it("testing blacklistUpdate() - unblacklisting a person", async function () {

@@ -2,9 +2,10 @@ const { ethers, upgrades } = require('hardhat');
 
 async function main () {
     // Upgrading
-    const mnkCoinContractV2 = await ethers.getContractFactory('MntCoinPrototype');
-    const upgraded = await upgrades.upgradeProxy("0xD54FB5b7C47D8c17f30aEa3Bae8155D2D22EC70b",mnkCoinContractV2,[],{ initializer: 'initialize'});
-    console.log('MntCoinPrototype deployed to:', upgraded.address);
+
+    montCoinPrototypeV2 = await ethers.getContractFactory('MontCoinPrototypeV2');
+    coin2 = await upgrades.upgradeProxy("0xc4cFEe841dCCa0a672f6cBCadbAF6Fd7F38D7147", montCoinPrototypeV2);
+    console.log(`Address Is At ${coin2.address}`)
   }
   
   main()

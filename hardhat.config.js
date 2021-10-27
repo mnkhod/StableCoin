@@ -6,6 +6,8 @@ require('@openzeppelin/hardhat-upgrades');
 require("@openzeppelin/test-helpers");
 require("@nomiclabs/hardhat-truffle4");
 require("@nomiclabs/hardhat-etherscan");
+require("@openzeppelin/hardhat-defender");
+
 
 
 const infura_key = process.env.INFURA_SECRET_KEY
@@ -17,6 +19,10 @@ const etherscan_key = process.env.ETHER_SCAN_KEY
  */
 module.exports = {
   solidity: "0.8.2",
+  defender: {
+    apiKey: process.env.DEFENDER_TEAM_API_KEY,
+    apiSecret: process.env.DEFENDER_TEAM_API_SECRET_KEY,
+  },
   abiExporter: {
     path: './data/abi',
     clear: true,
